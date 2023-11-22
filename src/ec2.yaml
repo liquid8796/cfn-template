@@ -16,4 +16,4 @@ Resources:
     Properties:
       ImageId: !Ref ImageId
       KeyName: !Ref KeyName
-      InstanceType: 
+      InstanceType: !Ref InstanceType
