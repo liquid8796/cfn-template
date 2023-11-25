@@ -14,7 +14,7 @@ Parameters:
   ServerSecurityGroup:
     Description: SecurityGroup for EC2
     Type: AWS::EC2::SecurityGroup::GroupName
-    Default: launch-wizard-1
+    Default: jarvis-ec2
 
 Resources:
   TestEc2:
