@@ -31,7 +31,7 @@ Resources:
             VolumeType: gp3
             VolumeSize: 30
             DeleteOnTermination: true
-            Encrypted: true
+            Encrypted: false
 
   # EbsVolume:
   #   Type: AWS::EC2::Volume
