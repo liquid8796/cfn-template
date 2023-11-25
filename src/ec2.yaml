@@ -24,8 +24,14 @@ Resources:
       AvailabilityZone: ap-southeast-1a
       SecurityGroups:
         - !Ref ServerSecurityGroup
-      Volumes:
-        - !Ref EbsVolume
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: gp2
+            VolumeSize: '30'
+            DeleteOnTermination: 'false'
+            Encrypted: 'true'
+
   # EbsVolume:
   #   Type: AWS::EC2::Volume
   #   Properties: 
