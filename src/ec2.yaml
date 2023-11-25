@@ -73,10 +73,6 @@ Resources:
           aws route53 change-resource-record-sets --hosted-zone-id $ZONE_TAG --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME_TAG'","Type":"A","TTL":300,"ResourceRecords":[{"Value":"'$MY_IP'"}]}}]}'
 
           --//--
-
-
-      
-
   # EbsVolume:
   #   Type: AWS::EC2::Volume
   #   Properties: 
