@@ -23,4 +23,5 @@ Resources:
       InstanceType: !Ref InstanceType
       SecurityGroups:
         - !Ref ServerSecurityGroup
+  EbsVolumne: AWS:EC2:EBS
   
