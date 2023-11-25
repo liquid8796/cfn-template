@@ -38,6 +38,11 @@ Resources:
             VolumeSize: 30
             DeleteOnTermination: true
             Encrypted: false
+      Tags:
+        - Key: AUTO_DNS_NAME
+          Value: nam-ha.com
+        - Key: AUTO_DNS_ZONE
+          Value: Z07181911LUA9W1ZO4U7N
       UserData:
         !Base64 |
           Content-Type: multipart/mixed; boundary="//"
