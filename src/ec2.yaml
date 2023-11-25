@@ -21,7 +21,8 @@ Resources:
       ImageId: !Ref ImageId
       KeyName: !Ref KeyName
       InstanceType: !Ref InstanceType
-      AvailabilityZone: "ap-southeast-1"
+      AvailabilityZone:
+        - "ap-southeast-1"
       SecurityGroups:
         - !Ref ServerSecurityGroup
   # EbsVolume:
