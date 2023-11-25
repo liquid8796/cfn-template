@@ -6,6 +6,7 @@ Parameters:
   InstanceRole:
     Description: Iam role for EC2
     Type: AWS::IAM::InstanceProfile::InstanceProfileName
+    Default: EC2ExecuteRole
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
