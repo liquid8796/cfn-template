@@ -24,9 +24,9 @@ Resources:
       AvailabilityZone: "ap-southeast-1"
       SecurityGroups:
         - !Ref ServerSecurityGroup
-  EbsVolume:
-    Type: AWS::EC2::Volume
-    Properties:
-      Volum
+  # EbsVolume:
+  #   Type: AWS::EC2::Volume
+  #   Properties:
+  #     Volume
 
   
