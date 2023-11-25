@@ -3,6 +3,9 @@ Parameters:
     Description: EC2 instance type
     Type: AWS::SSM::Parameter::Value<String>
     Default: /dev/ec2/instanceType
+  InstanceRole:
+    Description: Iam role for EC2
+    Type: AWS::IAM::InstanceProfile::InstanceProfileName
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
