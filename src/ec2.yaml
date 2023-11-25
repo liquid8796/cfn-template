@@ -27,8 +27,8 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
-            VolumeType: gp2
-            VolumeSize: '30'
+            VolumeType: gp3
+            VolumeSize: 30
             DeleteOnTermination: 'false'
             Encrypted: 'true'
 
