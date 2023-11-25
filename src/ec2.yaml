@@ -15,7 +15,7 @@ Parameters:
     Default: launch-wizard-1
 
 Resources:
-  Test:
+  TestEc2:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref ImageId
