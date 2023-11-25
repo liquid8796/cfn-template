@@ -21,3 +21,5 @@ Resources:
       ImageId: !Ref ImageId
       KeyName: !Ref KeyName
       InstanceType: !Ref InstanceType
+      SecurityGroups:
+        - !Ref ServerSecurityGroup
