@@ -12,7 +12,7 @@ Parameters:
   ServerSecurityGroup:
     Description: SecurityGroup for EC2
     Type: AWS::EC2::SecurityGroup::GroupName
-    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+    Default: launch-wizard-1
 
 Resources:
   Test:
