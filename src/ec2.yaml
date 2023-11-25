@@ -4,8 +4,10 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /dev/ec2/instanceType
   KeyName:
-    Type: AWS::EC2::KeyPair::KeyName
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+
+
   ImageId: # Public SSM Paramater
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
     Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
