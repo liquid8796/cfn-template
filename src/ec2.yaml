@@ -83,7 +83,7 @@ Resources:
   #   Properties: 
   #     VolumeType: gp3
   #     Size: 30
-  #     AvailabilityZone: !GetAtt TestEc2.AvailabilityZone
+  #     AvailabilityZone: !GetAtt Ec2Instance.AvailabilityZone
     
 
   
