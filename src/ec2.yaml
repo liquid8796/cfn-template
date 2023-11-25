@@ -27,6 +27,7 @@ Resources:
       ImageId: !Ref ImageId
       KeyName: !Ref KeyName
       InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref InstanceRole
       AvailabilityZone: ap-southeast-1a
       SecurityGroups:
         - !Ref ServerSecurityGroup
