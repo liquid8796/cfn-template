@@ -47,6 +47,8 @@ Resources:
             DeleteOnTermination: true
             Encrypted: false
       Tags:
+        - Key: Name
+          Value: !Ref InstanceName
         - Key: AUTO_DNS_NAME
           Value: nam-ha.com
         - Key: AUTO_DNS_ZONE
