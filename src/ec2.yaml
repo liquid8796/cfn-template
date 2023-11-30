@@ -1,4 +1,8 @@
 Parameters:
+  InstanceName:
+    Description: EC2 name
+    Type: String
+    Default: Jarvis
   InstanceType:
     Description: EC2 instance type
     Type: AWS::SSM::Parameter::Value<String>
@@ -19,6 +23,10 @@ Parameters:
     Description: SecurityGroup for EC2
     Type: AWS::EC2::SecurityGroup::GroupName
     Default: jarvis-ec2
+  AvailabilityZone:
+    Description: Availability Zone which resources deploy to
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: ap-southeast-1a
 
 Resources:
   Ec2Instance:
@@ -28,14 +36,14 @@ Resources:
       KeyName: !Ref KeyName
       InstanceType: !Ref InstanceType
       IamInstanceProfile: !Ref InstanceRole
-      AvailabilityZone: ap-southeast-1a
+      AvailabilityZone: !Ref AvailabilityZone
       SecurityGroups:
         - !Ref ServerSecurityGroup
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
             VolumeType: gp3
-            VolumeSize: 30
+            VolumeSize: 8
             DeleteOnTermination: true
             Encrypted: false
       Tags:
@@ -80,12 +88,3 @@ Resources:
           aws route53 change-resource-record-sets --hosted-zone-id $ZONE_TAG --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME_TAG'","Type":"A","TTL":300,"ResourceRecords":[{"Value":"'$MY_IP'"}]}}]}'
 
           --//--
-  # EbsVolume:
-  #   Type: AWS::EC2::Volume
-  #   Properties: 
-  #     VolumeType: gp3
-  #     Size: 30
-  #     AvailabilityZone: !GetAtt Ec2Instance.AvailabilityZone
-    
-
-  
