@@ -27,6 +27,10 @@ Parameters:
     Description: Availability Zone which resources deploy to
     Type: AWS::EC2::AvailabilityZone::Name
     Default: ap-southeast-1a
+  VolumeSize:
+    Description: Size of volume
+    Type: Number
+    Default: ap-southeast-1a
 
 Resources:
   Ec2Instance:
