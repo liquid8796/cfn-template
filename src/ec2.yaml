@@ -30,7 +30,7 @@ Parameters:
   VolumeSize:
     Description: Size of volume
     Type: Number
-    Default: ap-southeast-1a
+    Default: 8
 
 Resources:
   Ec2Instance:
