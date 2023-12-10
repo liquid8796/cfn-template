@@ -27,7 +27,7 @@ Parameters:
     Description: Availability Zone which resources deploy to
     Type: AWS::EC2::AvailabilityZone::Name
     Default: ap-southeast-1a
-  VolumeSize:
+  VolSize:
     Description: Size of volume
     Type: Number
     Default: 8
@@ -47,7 +47,7 @@ Resources:
         - DeviceName: /dev/xvda
           Ebs:
             VolumeType: gp3
-            VolumeSize: !Ref VolumeSize
+            VolumeSize: !Ref VolSize
             DeleteOnTermination: true
             Encrypted: false
       Tags:
