@@ -1,0 +1,99 @@
+Parameters:
+  InstanceName:
+    Description: EC2 name
+    Type: String
+    Default: Jarvis
+  InstanceType:
+    Description: EC2 instance type
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /dev/ec2/instanceType
+  InstanceRole:
+    Description: Iam role for EC2
+    Type: String
+    Default: EC2ExecuteRole
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: Laptop
+  ImageId:
+    Description: Select latest AMI from Public SSM Paramater
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64
+  ServerSecurityGroup:
+    Description: SecurityGroup for EC2
+    Type: AWS::EC2::SecurityGroup::GroupName
+    Default: jarvis-ec2
+  AvailabilityZone:
+    Description: Availability Zone which resources deploy to
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: ap-southeast-1a
+  VolSize:
+    Description: Size of volume
+    Type: Number
+    Default: 8
+
+Resources:
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      KeyName: !Ref KeyName
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref InstanceRole
+      AvailabilityZone: !Ref AvailabilityZone
+      SecurityGroups:
+        - !Ref ServerSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: gp3
+            VolumeSize: !Ref VolSize
+            DeleteOnTermination: true
+            Encrypted: false
+      Tags:
+        - Key: Name
+          Value: !Ref InstanceName
+        - Key: AUTO_DNS_NAME
+          Value: nam-ha.com
+        - Key: AUTO_DNS_ZONE
+          Value: Z07181911LUA9W1ZO4U7N
+      UserData:
+        !Base64 |
+          Content-Type: multipart/mixed; boundary="//"
+          MIME-Version: 1.0
+
+          --//
+          Content-Type: text/cloud-config; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="cloud-config.txt"
+
+          #cloud-config
+          cloud_final_modules:
+          - [scripts-user, always]
+
+          --//
+          Content-Type: text/x-shellscript; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="userdata.txt"
+
+          #!/bin/bash      
+          # Extract information about the Instance
+          sleep 5
+          TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+          sleep 5
+          INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/instance-id/)
+          aws ec2 modify-instance-metadata-options --instance-id $INSTANCE_ID --http-tokens optional
+          sleep 5
+          AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
+          MY_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4/)
+
+          # Extract tags associated with instance
+          ZONE_TAG=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`AUTO_DNS_ZONE`].Value' --output text)
+          NAME_TAG=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`AUTO_DNS_NAME`].Value' --output text)
+
+          # Update Route 53 Record Set based on the Name tag to the current Public IP address of the Instance
+          aws route53 change-resource-record-sets --hosted-zone-id $ZONE_TAG --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME_TAG'","Type":"A","TTL":300,"ResourceRecords":[{"Value":"'$MY_IP'"}]}}]}'
+
+          --//--
